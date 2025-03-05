@@ -1,0 +1,43 @@
+name: Test Java_mutable-parameters
+
+on:
+  push:
+    paths:
+      - 'Java_mutable-parameters/**'
+      - '.github/workflows/Java_mutable-parameters.yml'
+  pull_request:
+    paths:
+      - 'Java_mutable-parameters/**'
+      - '.github/workflows/Java_mutable-parameters.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java-version: [14, 17, 21]
+
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v4
+
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'adopt'
+        java-version: ${{ matrix.java-version }}
+    - name: Cache Maven packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('Java_mutable-parameters/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+
+    - name: Build and test
+      working-directory: Java_mutable-parameters
+      run: mvn -B package
+
+    - name: Run
+      working-directory: Java_mutable-parameters
+      run: mvn compile exec:java

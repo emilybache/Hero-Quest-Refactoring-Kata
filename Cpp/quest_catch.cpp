@@ -1,5 +1,4 @@
 #define CATCH_CONFIG_MAIN
-#include <cstdlib>
 #include <catch2/catch.hpp>
 #include <string>
 
@@ -105,7 +104,6 @@ TEST_CASE("Quest")
 
     SECTION("itemRepair")
     {
-        srand(5); // control the random value
         itemRepair(&testItemPower, testPlayerCraftingSkill);
 
         REQUIRE(testItemPower == 26);

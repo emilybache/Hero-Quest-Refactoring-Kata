@@ -1,0 +1,40 @@
+name: Test JavaScript
+
+on:
+  push:
+    paths:
+      - 'JavaScript/**'
+      - '.github/workflows/JavaScript.yml'
+  pull_request:
+    paths:
+      - 'JavaScript/**'
+      - '.github/workflows/JavaScript.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10, 12, 14, 16, 18, 20, 22]
+
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Set up dependencies
+      working-directory: JavaScript
+      run: npm install --force
+
+    - name: Test
+      working-directory: JavaScript
+      run: npm test
+
+    - name: Run
+      working-directory: JavaScript
+      run: npm start

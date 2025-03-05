@@ -1,7 +1,6 @@
 #include <setjmp.h>
 #include <stdarg.h>
 #include <stddef.h>
-#include <stdlib.h> 
 
 #include "quest.h"
 #include <cmocka.h>
@@ -112,7 +111,6 @@ static void test_itemRepair(void** state)
 {
     (void)state;
 
-    srand(5); // control the random value
     itemRepair(&testItemPower, testPlayerCraftingSkill);
 
     assert_int_equal(testItemPower, 26);

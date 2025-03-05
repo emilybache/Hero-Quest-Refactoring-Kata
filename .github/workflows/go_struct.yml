@@ -1,0 +1,32 @@
+name: Test go_struct variant
+
+on:
+  push:
+    paths:
+      - 'go_struct/**'
+      - '.github/workflows/go_struct.yml'
+  pull_request:
+    paths:
+      - 'go_struct/**'
+      - '.github/workflows/go_struct.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '>=1.23.6'
+
+    - name: Test
+      working-directory: go_struct
+      run: go test -v ./...
+
+    - name: Run
+      working-directory: go_struct
+      run: go run ./

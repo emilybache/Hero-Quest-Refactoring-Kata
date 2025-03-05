@@ -1,0 +1,33 @@
+name: Test dotnet
+
+on:
+  push:
+    paths:
+      - 'dotnet_csharp/**'
+      - '.github/workflows/dotnet.yml'
+  pull_request:
+    paths:
+      - 'dotnet_csharp/**'
+      - '.github/workflows/dotnet.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+          cache: true
+          cache-dependency-path: dotnet_csharp/HeroQuest.Test/packages.lock.json
+
+      - name: Set up dependencies
+        working-directory: dotnet_csharp
+        run: dotnet restore --locked-mode
+
+      - name: Build and test
+        working-directory: dotnet_csharp
+        run: dotnet test

@@ -3,7 +3,7 @@ Hero Quest Refactoring Kata
 
 You can use this exercise to practice turning Data Clumps into classes.
 
-There is a writeup for a full learning hour using this exercise [Extracting data Clumps](https://sammancoaching.org/learning_hours/refactoring/extracting_data_clumps.html).
+There is a write-up for a full learning hour using this exercise [Extracting data Clumps](https://sammancoaching.org/learning_hours/refactoring/extracting_data_clumps.html).
 
 Acknowledgements
 ----------------

@@ -1,0 +1,24 @@
+{
+    "name": "codecop/hero-quest-refactoring-kata",
+    "require": {
+        "php": ">=7.3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "9.6.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "CodingDojo\\": "src\/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "test\/"
+        }
+    },
+    "scripts": {
+        "run-main": "php src/main.php",
+        "test": "phpunit",
+        "tests": "phpunit"
+    }
+}

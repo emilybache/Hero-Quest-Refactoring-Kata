@@ -43,10 +43,15 @@ jobs:
         cd build
         cmake -G "Unix Makefiles" ..
         cmake --build .
-        ./quest
 
     - name: Test
       working-directory: C
       run: |
         cd build
         ./quest_test
+
+    - name: Run
+      working-directory: C
+      run: |
+        cd build
+        ./quest

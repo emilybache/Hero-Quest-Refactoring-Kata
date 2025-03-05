@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <cstdlib>
 
 #include "quest.h"
 
@@ -83,7 +82,7 @@ void itemRepair(int* itemPower, int playerCraftingSkill)
 {
     printf("Using the repair skill to fix the item:\n");
 
-    int repairAmount = rand() % (playerCraftingSkill * 2) + 1;
+    int repairAmount = -5 + ((playerCraftingSkill * 2) + 1);
 
     *itemPower += repairAmount;
 

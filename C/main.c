@@ -1,13 +1,10 @@
 #include <stdio.h>
-#include <stdlib.h> /* rand */
 #include <time.h>
 
 #include "quest.h"
 
 int main(void)
 {
-    srand(time(0));
-
     char result[256];
     playerToString(result, playerName, playerHealth, playerStrength,
                    playerMagic, playerCraftingSkill);

@@ -1,5 +1,7 @@
 # Hero Quest Refactoring Kata in C / C++
 
+**Variant:** The data is passed by reference, using pointers for all parameters.
+
 The starting code is in C but we are using a C++ compiler and the files are already named .cpp so you can easily move to using C++.
 
 **Scenario:** We are looking to migrate this code from C to C++. The basic part is done - we have a Cpp compiler in place. The more difficult part is to change the _style_ of the code and take advantage of C++ features like encapsulation.
@@ -33,7 +35,7 @@ The starting code is in C but we are using a C++ compiler and the files are alre
   * Confirmation: all the code compiles and the tests pass
 * [ ] Remove the data clump from the method signature
   * [ ] Use 'change signature' refactoring
-  * Confirmation: the global variables are unused and the tool confirms this when you 'search for references'. If there are futher references, repeat the steps above to replace them with references to the new class.
+  * Confirmation: the global variables are unused and the tool confirms this when you 'search for references'. If there are further references, repeat the steps above to replace them with references to the new class.
 * [ ] Remove the global variables that are replaced by the new class
   * Confirmation: the tests still pass and the output from main is still the same.
 * [ ] Encapsulate the global data in the new class

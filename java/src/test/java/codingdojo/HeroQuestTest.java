@@ -83,7 +83,6 @@ public class HeroQuestTest {
 
     @Test
     void itemRepair() {
-        questData.setItemKind("Junk");
         HeroQuest.itemRepair(questData);
         assertEquals(26, questData.getItemPower());
     }

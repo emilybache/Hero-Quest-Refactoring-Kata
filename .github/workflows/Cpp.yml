@@ -24,10 +24,15 @@ jobs:
         cd build
         cmake -G "Unix Makefiles" ..
         cmake --build .
-        ./quest
 
     - name: Test
       working-directory: Cpp
       run: |
         cd build
         ./quest_test -r console -s
+
+    - name: Run
+      working-directory: Cpp
+      run: |
+        cd build
+        ./quest

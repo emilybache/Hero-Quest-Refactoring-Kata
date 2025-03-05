@@ -1,0 +1,40 @@
+name: Test PHP
+
+on:
+  push:
+    paths:
+      - 'PHP/**'
+      - '.github/workflows/PHP.yml'
+  pull_request:
+    paths:
+      - 'PHP/**'
+      - '.github/workflows/PHP.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version: ["7.3", "8.0", "8.2"]
+
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+
+    - name: Set up dependencies
+      working-directory: PHP
+      run: composer install
+
+    - name: Test
+      working-directory: PHP
+      run: ./vendor/bin/phpunit
+
+    - name: Run
+      working-directory: PHP
+      run: composer run-main

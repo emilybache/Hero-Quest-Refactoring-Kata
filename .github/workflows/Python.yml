@@ -1,0 +1,36 @@
+name: Test Python
+
+on:
+  push:
+    paths:
+      - 'Python/**'
+      - '.github/workflows/Python.yml'
+  pull_request:
+    paths:
+      - 'Python/**'
+      - '.github/workflows/Python.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.10", "3.12"]
+
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+          python-version: ${{ matrix.python-version }}
+
+    - name: Test
+      working-directory: Python
+      run: python hero_quest_tests.py
+
+    - name: Run
+      working-directory: Python
+      run: python main.py
