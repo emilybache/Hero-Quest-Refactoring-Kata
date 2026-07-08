@@ -17,4 +17,8 @@ public class QuestData
     public string? ItemKind { get; set; }
     
     public int  ItemPower { get; set; }
+    
+    public string? EnemyName { get; set; }
+    
+    public int EnemyPower { get; set; }
 }
