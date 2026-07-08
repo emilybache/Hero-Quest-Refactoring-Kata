@@ -9,3 +9,5 @@ Acknowledgements
 ----------------
 
 This exercise was designed by Peter Kofler. See the [license](license.txt).
+
+The initial code was created with GenAI/ChatGPT, October 2023.
