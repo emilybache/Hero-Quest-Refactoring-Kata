@@ -93,4 +93,101 @@ public class HeroQuestTest
         HeroQuest.ItemRepair(_questData);
         Assert.Equal(26, _questData.ItemPower);
     }
+
+    [Fact]
+    void EnemyToString()
+    {
+        _questData.EnemyName = "Goblin Warlord";
+        _questData.EnemyPower = 15;
+        
+        var result = HeroQuest.EnemyToString(_questData);
+        var expected = "Enemy: Goblin Warlord\nPower: 15\n";
+        
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    void EnemyAttackPlayerNormalDamage()
+    {
+        _questData.EnemyName = "Dragon";
+        _questData.EnemyPower = 25;
+        _questData.PlayerStrength = 5;
+        
+        HeroQuest.EnemyAttackPlayer(_questData);
+        
+        Assert.Equal(75, _questData.PlayerHealth);
+    }
+
+    [Fact]
+    void EnemyAttackPlayerReducedDamage()
+    {
+        _questData.EnemyName = "Goblin";
+        _questData.EnemyPower = 10;
+        _questData.PlayerStrength = 15;
+        
+        HeroQuest.EnemyAttackPlayer(_questData);
+        
+        Assert.Equal(95, _questData.PlayerHealth);
+    }
+
+    [Fact]
+    void PlayerChallengeEnemyWins()
+    {
+        _questData.EnemyName = "Goblin";
+        _questData.EnemyPower = 10;
+        _questData.PlayerStrength = 25;
+        _questData.ItemPower = 10;
+        
+        HeroQuest.PlayerChallengeEnemy(_questData);
+        
+        Assert.Equal(-5, _questData.EnemyPower);
+    }
+
+    [Fact]
+    void PlayerChallengeEnemyRetreats()
+    {
+        _questData.EnemyName = "Dragon";
+        _questData.EnemyPower = 50;
+        _questData.PlayerStrength = 10;
+        _questData.ItemPower = 5;
+        
+        HeroQuest.PlayerChallengeEnemy(_questData);
+        
+        Assert.Equal(50, _questData.EnemyPower);
+    }
+
+    [Fact]
+    void PlayerChallengeEnemyNoItem()
+    {
+        _questData.EnemyName = "Orc";
+        _questData.EnemyPower = 20;
+        _questData.PlayerStrength = 22;
+        _questData.ItemPower = 0;
+        
+        HeroQuest.PlayerChallengeEnemy(_questData);
+        
+        Assert.Equal(9, _questData.EnemyPower);
+    }
+
+    [Fact]
+    void ItemApplyEffectToPlayerMagic()
+    {
+        _questData.ItemKind = "Magic";
+        _questData.ItemPower = 15;
+        
+        HeroQuest.ItemApplyEffectToPlayer(_questData);
+        
+        Assert.Equal(25, _questData.PlayerMagic);
+    }
+
+    [Fact]
+    void ItemApplyEffectToPlayerHealth()
+    {
+        _questData.ItemKind = "Health";
+        _questData.ItemPower = 20;
+        
+        HeroQuest.ItemApplyEffectToPlayer(_questData);
+        
+        Assert.Equal(120, _questData.PlayerHealth);
+    }
 }
