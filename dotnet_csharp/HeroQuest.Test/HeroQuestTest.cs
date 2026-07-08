@@ -24,8 +24,7 @@ public class HeroQuestTest
     [Fact]
     void PlayerToString()
     {
-        string result = HeroQuest.PlayerToString(_questData.PlayerName!, _questData.PlayerHealth,
-            _questData.PlayerStrength, _questData.PlayerMagic, _questData.PlayerCraftingSkill);
+        string result = HeroQuest.PlayerToString(_questData);
 
         var expected = "Conan's Attributes:\nHealth: 100\nStrength: 20\nMagic: " +
                        "10\nCrafting " +
@@ -52,7 +51,7 @@ public class HeroQuestTest
     [Fact]
     void ItemToString()
     {
-        var result = HeroQuest.ItemToString(_questData.ItemName, _questData.ItemKind, _questData.ItemPower);
+        var result = HeroQuest.ItemToString(_questData);
         var expected = "Item: Amulet of Strength\nKind: Strength\nPower: 10\n";
         Assert.Equal(expected, result);
     }

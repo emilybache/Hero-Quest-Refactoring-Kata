@@ -2,11 +2,20 @@ namespace CodingDojo;
 
 public static class HeroQuest
 {
-    public static string PlayerToString(string playerName, int playerHealth, int playerStrength, int playerMagic,
-        int playerCraftingSkill)
+    public static string PlayerToString(QuestData questData)
     {
         return
-            $"{playerName}'s Attributes:\nHealth: {playerHealth}\nStrength: {playerStrength}\nMagic: {playerMagic}\nCrafting Skill: {playerCraftingSkill}\n";
+            $"{questData.PlayerName}'s Attributes:\nHealth: {questData.PlayerHealth}\nStrength: {questData.PlayerStrength}\nMagic: {questData.PlayerMagic}\nCrafting Skill: {questData.PlayerCraftingSkill}\n";
+    }
+    
+    public static string EnemyToString(QuestData questData)
+    {
+        return $"Enemy: {questData.EnemyName}\nPower: {questData.EnemyPower}\n";
+    }
+    
+    public static String ItemToString(QuestData questData)
+    {
+        return $"Item: {questData.ItemName}\nKind: {questData.ItemKind}\nPower: {questData.ItemPower}\n";
     }
 
     public static void PlayerFallsDown(QuestData questData)
@@ -17,11 +26,6 @@ public static class HeroQuest
             questData.PlayerHealth = questData.PlayerHealth - 10;
             Console.WriteLine("Player's strength is too small. Health decreases by 10.");
         }
-    }
-
-    public static String ItemToString(String itemName, String itemKind, int itemPower)
-    {
-        return $"Item: {itemName}\nKind: {itemKind}\nPower: {itemPower}\n";
     }
 
     public static void ItemReduceByUsage(QuestData questData)
@@ -58,10 +62,7 @@ public static class HeroQuest
         Console.WriteLine($"Repaired the item by {repairAmount} points. Item's Durability: {questData.ItemPower}");
     }
     
-    public static string EnemyToString(string enemyName, int enemyPower)
-    {
-        return $"Enemy: {enemyName}\nPower: {enemyPower}\n";
-    }
+
     
     public static void EnemyAttackPlayer(QuestData questData)
     {
