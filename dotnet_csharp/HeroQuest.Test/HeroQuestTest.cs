@@ -1,6 +1,7 @@
 namespace CodingDojo.Test;
 
 using CodingDojo;
+using System.Text;
 
 public class HeroQuestTest
 {
@@ -8,6 +9,7 @@ public class HeroQuestTest
 
     public HeroQuestTest()
     {
+        HeroQuest.Output = new StringBuilder();
         _questData = new()
         {
             PlayerName = "Conan",

@@ -1,4 +1,7 @@
 ﻿using CodingDojo;
+using System.Text;
+
+HeroQuest.Output = new StringBuilder();
 
 QuestData questData = new ()
 {
@@ -14,49 +17,51 @@ QuestData questData = new ()
  EnemyPower = 12
 };
 
-Console.WriteLine("=== QUEST BEGINNING ===\n");
+HeroQuest.Output.AppendLine("=== QUEST BEGINNING ===\n");
 string result = HeroQuest.PlayerToString(questData);
-Console.WriteLine(result);
+HeroQuest.Output.AppendLine(result);
 
 result = HeroQuest.ItemToString(questData);
-Console.WriteLine(result);
+HeroQuest.Output.AppendLine(result);
 
-Console.WriteLine("--- Exploring the dungeon... ---\n");
+HeroQuest.Output.AppendLine("--- Exploring the dungeon... ---\n");
 HeroQuest.PlayerFallsDown(questData);
 result = HeroQuest.PlayerToString(questData);
-Console.WriteLine(result);
+HeroQuest.Output.AppendLine(result);
 
-Console.WriteLine("--- Using the healing item ---\n");
+HeroQuest.Output.AppendLine("--- Using the healing item ---\n");
 HeroQuest.ItemApplyEffectToPlayer(questData);
 result = HeroQuest.PlayerToString(questData);
-Console.WriteLine(result);
+HeroQuest.Output.AppendLine(result);
 
 result = HeroQuest.ItemToString(questData);
-Console.WriteLine(result);
+HeroQuest.Output.AppendLine(result);
 
-Console.WriteLine("--- Item degradation from repeated use ---\n");
+HeroQuest.Output.AppendLine("--- Item degradation from repeated use ---\n");
 HeroQuest.ItemReduceByUsage(questData);
 result = HeroQuest.ItemToString(questData);
-Console.WriteLine(result);
+HeroQuest.Output.AppendLine(result);
 
 HeroQuest.ItemReduceByUsage(questData);
 result = HeroQuest.ItemToString(questData);
-Console.WriteLine(result);
+HeroQuest.Output.AppendLine(result);
 
-Console.WriteLine("--- Repairing the damaged item ---\n");
+HeroQuest.Output.AppendLine("--- Repairing the damaged item ---\n");
 HeroQuest.ItemRepair(questData);
 result = HeroQuest.ItemToString(questData);
-Console.WriteLine(result);
+HeroQuest.Output.AppendLine(result);
 
-Console.WriteLine("=== ENEMY ENCOUNTER ===\n");
+HeroQuest.Output.AppendLine("=== ENEMY ENCOUNTER ===\n");
 result = HeroQuest.EnemyToString(questData);
-Console.WriteLine(result);
+HeroQuest.Output.AppendLine(result);
 
 HeroQuest.EnemyAttackPlayer(questData);
 result = HeroQuest.PlayerToString(questData);
-Console.WriteLine(result);
+HeroQuest.Output.AppendLine(result);
 
-Console.WriteLine("--- Player retaliates ---\n");
+HeroQuest.Output.AppendLine("--- Player retaliates ---\n");
 HeroQuest.PlayerChallengeEnemy(questData);
 result = HeroQuest.EnemyToString(questData);
-Console.WriteLine(result);
+HeroQuest.Output.AppendLine(result);
+
+Console.WriteLine(HeroQuest.Output.ToString());

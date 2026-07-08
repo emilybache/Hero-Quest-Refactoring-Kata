@@ -1,7 +1,11 @@
 namespace CodingDojo;
 
+using System.Text;
+
 public static class HeroQuest
 {
+    public static StringBuilder Output { get; set; } = new();
+
     public static string PlayerToString(QuestData questData)
     {
         return
@@ -20,17 +24,17 @@ public static class HeroQuest
 
     public static void PlayerFallsDown(QuestData questData)
     {
-        Console.WriteLine("Player drops off a cliff.");
+        Output.AppendLine("Player drops off a cliff.");
         if (questData.PlayerStrength < 5)
         {
             questData.PlayerHealth = questData.PlayerHealth - 10;
-            Console.WriteLine("Player's strength is too small. Health decreases by 10.");
+            Output.AppendLine("Player's strength is too small. Health decreases by 10.");
         }
     }
 
     public static void ItemReduceByUsage(QuestData questData)
     {
-        Console.WriteLine($"Using the item with kind '{questData.ItemKind}' and power {questData.ItemPower}");
+        Output.AppendLine($"Using the item with kind '{questData.ItemKind}' and power {questData.ItemPower}");
         questData.ItemPower = questData.ItemPower / 2;
         if (questData.ItemPower == 0)
         {
@@ -39,7 +43,7 @@ public static class HeroQuest
     }
     
     public static void ItemApplyEffectToPlayer(QuestData data) {
-       Console.WriteLine($"Applying the effect of {data.ItemName} ({data.ItemKind}):");
+        Output.AppendLine($"Applying the effect of {data.ItemName} ({data.ItemKind}):");
 
         if (data.ItemKind == "Health") {
             data.PlayerHealth = data.PlayerHealth + data.ItemPower;
@@ -53,45 +57,45 @@ public static class HeroQuest
     }
     
     public static void ItemRepair(QuestData questData) {
-       Console.WriteLine("Using the repair skill to fix the item:");
+        Output.AppendLine("Using the repair skill to fix the item:");
 
         int repairAmount = -5 + ((questData.PlayerCraftingSkill) * 2) + 1;
 
         questData.ItemPower =  (questData.ItemPower + repairAmount);
 
-        Console.WriteLine($"Repaired the item by {repairAmount} points. Item's Durability: {questData.ItemPower}");
+        Output.AppendLine($"Repaired the item by {repairAmount} points. Item's Durability: {questData.ItemPower}");
     }
     
 
     
     public static void EnemyAttackPlayer(QuestData questData)
     {
-        Console.WriteLine($"The enemy '{questData.EnemyName}' attacks!");
+        Output.AppendLine($"The enemy '{questData.EnemyName}' attacks!");
         int damage = questData.EnemyPower;
         
         if (questData.PlayerStrength > questData.EnemyPower)
         {
             damage = damage / 2;
-            Console.WriteLine("Player's strength allows them to reduce the damage!");
+            Output.AppendLine("Player's strength allows them to reduce the damage!");
         }
         
         questData.PlayerHealth = questData.PlayerHealth - damage;
-        Console.WriteLine($"Player takes {damage} damage. Health is now: {questData.PlayerHealth}");
+        Output.AppendLine($"Player takes {damage} damage. Health is now: {questData.PlayerHealth}");
     }
     
     public static void PlayerChallengeEnemy(QuestData questData)
     {
-        Console.WriteLine($"The player challenges {questData.EnemyName}!");
+        Output.AppendLine($"The player challenges {questData.EnemyName}!");
         int playerAttackPower = questData.PlayerStrength + (questData.ItemPower > 0 ? questData.ItemPower / 2 : 0);
         
         if (playerAttackPower > questData.EnemyPower)
         {
             questData.EnemyPower = questData.EnemyPower - (playerAttackPower / 2);
-            Console.WriteLine($"The player defeats the enemy! Enemy power reduced to {questData.EnemyPower}");
+            Output.AppendLine($"The player defeats the enemy! Enemy power reduced to {questData.EnemyPower}");
         }
         else
         {
-            Console.WriteLine("The enemy is too strong. The player retreats!");
+            Output.AppendLine("The enemy is too strong. The player retreats!");
         }
     }
 }
