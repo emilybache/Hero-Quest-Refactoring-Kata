@@ -5,9 +5,14 @@ using System.Text;
 
 public class HeroQuestTest
 {
-    private QuestData _questData;
+    private QuestData _questData = null!;
 
     public HeroQuestTest()
+    {
+        SetUp();
+    }
+
+    private void SetUp()
     {
         HeroQuest.Output = new StringBuilder();
         _questData = new()
@@ -19,7 +24,9 @@ public class HeroQuestTest
             PlayerCraftingSkill = 10,
             ItemName = "Amulet of Strength",
             ItemKind = "Strength",
-            ItemPower = 10
+            ItemPower = 10,
+            EnemyName = "Goblin",
+            EnemyPower = 10
         };
     }
 
@@ -99,11 +106,9 @@ public class HeroQuestTest
     [Fact]
     void EnemyToString()
     {
-        _questData.EnemyName = "Goblin Warlord";
-        _questData.EnemyPower = 15;
         
         var result = HeroQuest.EnemyToString(_questData);
-        var expected = "Enemy: Goblin Warlord\nPower: 15\n";
+        var expected = "Enemy: Goblin\nPower: 10\n";
         
         Assert.Equal(expected, result);
     }
@@ -111,7 +116,6 @@ public class HeroQuestTest
     [Fact]
     void EnemyAttackPlayerNormalDamage()
     {
-        _questData.EnemyName = "Dragon";
         _questData.EnemyPower = 25;
         _questData.PlayerStrength = 5;
         
@@ -123,8 +127,6 @@ public class HeroQuestTest
     [Fact]
     void EnemyAttackPlayerReducedDamage()
     {
-        _questData.EnemyName = "Goblin";
-        _questData.EnemyPower = 10;
         _questData.PlayerStrength = 15;
         
         HeroQuest.EnemyAttackPlayer(_questData);
@@ -135,10 +137,7 @@ public class HeroQuestTest
     [Fact]
     void PlayerChallengeEnemyWins()
     {
-        _questData.EnemyName = "Goblin";
-        _questData.EnemyPower = 10;
         _questData.PlayerStrength = 25;
-        _questData.ItemPower = 10;
         
         HeroQuest.PlayerChallengeEnemy(_questData);
         
@@ -148,7 +147,6 @@ public class HeroQuestTest
     [Fact]
     void PlayerChallengeEnemyRetreats()
     {
-        _questData.EnemyName = "Dragon";
         _questData.EnemyPower = 50;
         _questData.PlayerStrength = 10;
         _questData.ItemPower = 5;
@@ -161,7 +159,6 @@ public class HeroQuestTest
     [Fact]
     void PlayerChallengeEnemyNoItem()
     {
-        _questData.EnemyName = "Orc";
         _questData.EnemyPower = 20;
         _questData.PlayerStrength = 22;
         _questData.ItemPower = 0;
