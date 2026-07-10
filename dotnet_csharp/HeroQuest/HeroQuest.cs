@@ -6,96 +6,118 @@ public static class HeroQuest
 {
     public static StringBuilder Output { get; set; } = new();
 
-    public static string PlayerToString(QuestData questData)
+    public static string PlayerToString(string? playerName, int playerHealth, int playerStrength, int playerMagic,
+        int playerCraftingSkill)
     {
         return
-            $"{questData.PlayerName}'s Attributes:\nHealth: {questData.PlayerHealth}\nStrength: {questData.PlayerStrength}\nMagic: {questData.PlayerMagic}\nCrafting Skill: {questData.PlayerCraftingSkill}\n";
-    }
-    
-    public static string EnemyToString(QuestData questData)
-    {
-        return $"Enemy: {questData.EnemyName}\nPower: {questData.EnemyPower}\n";
-    }
-    
-    public static String ItemToString(QuestData questData)
-    {
-        return $"Item: {questData.ItemName}\nKind: {questData.ItemKind}\nPower: {questData.ItemPower}\n";
+            $"{playerName}'s Attributes:\nHealth: {playerHealth}\nStrength: {playerStrength}\nMagic: {playerMagic}\nCrafting Skill: {playerCraftingSkill}\n";
     }
 
-    public static void PlayerFallsDown(QuestData questData)
+    public static string EnemyToString(string? enemyName, int enemyPower)
+    {
+        return $"Enemy: {enemyName}\nPower: {enemyPower}\n";
+    }
+
+    public static string ItemToString(string? itemName, string? itemKind, int itemPower)
+    {
+        return $"Item: {itemName}\nKind: {itemKind}\nPower: {itemPower}\n";
+    }
+
+    public static int PlayerFallsDown(int playerStrength, int playerHealth)
     {
         Output.AppendLine("Player drops off a cliff.");
-        if (questData.PlayerStrength < 5)
+        if (playerStrength < 5)
         {
-            questData.PlayerHealth = questData.PlayerHealth - 10;
+            playerHealth = playerHealth - 10;
             Output.AppendLine("Player's strength is too small. Health decreases by 10.");
         }
+
+        return playerHealth;
     }
 
-    public static void ItemReduceByUsage(QuestData questData)
+    public static (string? ItemKind, int ItemPower) ItemReduceByUsage(string? itemKind, int itemPower)
     {
-        Output.AppendLine($"Using the item with kind '{questData.ItemKind}' and power {questData.ItemPower}");
-        questData.ItemPower = questData.ItemPower / 2;
-        if (questData.ItemPower == 0)
+        Output.AppendLine($"Using the item with kind '{itemKind}' and power {itemPower}");
+        itemPower = itemPower / 2;
+        if (itemPower == 0)
         {
-            questData.ItemKind = "Junk";
+            itemKind = "Junk";
         }
-    }
-    
-    public static void ItemApplyEffectToPlayer(QuestData data) {
-        Output.AppendLine($"Applying the effect of {data.ItemName} ({data.ItemKind}):");
 
-        if (data.ItemKind == "Health") {
-            data.PlayerHealth = data.PlayerHealth + data.ItemPower;
-        } else if (data.ItemKind == "Strength") {
-            data.PlayerStrength = data.PlayerStrength + data.ItemPower;
-        } else if (data.ItemKind == "Magic") {
-            data.PlayerMagic = data.PlayerMagic + data.ItemPower;
-        } else {
+        return (itemKind, itemPower);
+    }
+
+    public static (int PlayerHealth, int PlayerStrength, int PlayerMagic) ItemApplyEffectToPlayer(string? itemName,
+        string? itemKind, int itemPower, int playerHealth, int playerStrength, int playerMagic)
+    {
+        Output.AppendLine($"Applying the effect of {itemName} ({itemKind}):");
+
+        if (itemKind == "Health")
+        {
+            playerHealth = playerHealth + itemPower;
+        }
+        else if (itemKind == "Strength")
+        {
+            playerStrength = playerStrength + itemPower;
+        }
+        else if (itemKind == "Magic")
+        {
+            playerMagic = playerMagic + itemPower;
+        }
+        else
+        {
             // ignore unknown item kind
         }
+
+        return (playerHealth, playerStrength, playerMagic);
     }
-    
-    public static void ItemRepair(QuestData questData) {
+
+    public static int ItemRepair(int playerCraftingSkill, int itemPower)
+    {
         Output.AppendLine("Using the repair skill to fix the item:");
 
-        int repairAmount = -5 + ((questData.PlayerCraftingSkill) * 2) + 1;
+        int repairAmount = -5 + (playerCraftingSkill * 2) + 1;
 
-        questData.ItemPower =  (questData.ItemPower + repairAmount);
+        itemPower = itemPower + repairAmount;
 
-        Output.AppendLine($"Repaired the item by {repairAmount} points. Item's Durability: {questData.ItemPower}");
+        Output.AppendLine($"Repaired the item by {repairAmount} points. Item's Durability: {itemPower}");
+
+        return itemPower;
     }
-    
 
-    
-    public static void EnemyAttackPlayer(QuestData questData)
+
+    public static int EnemyAttackPlayer(string? enemyName, int enemyPower, int playerStrength, int playerHealth)
     {
-        Output.AppendLine($"The enemy '{questData.EnemyName}' attacks!");
-        int damage = questData.EnemyPower;
-        
-        if (questData.PlayerStrength > questData.EnemyPower)
+        Output.AppendLine($"The enemy '{enemyName}' attacks!");
+        int damage = enemyPower;
+
+        if (playerStrength > enemyPower)
         {
             damage = damage / 2;
             Output.AppendLine("Player's strength allows them to reduce the damage!");
         }
-        
-        questData.PlayerHealth = questData.PlayerHealth - damage;
-        Output.AppendLine($"Player takes {damage} damage. Health is now: {questData.PlayerHealth}");
+
+        playerHealth = playerHealth - damage;
+        Output.AppendLine($"Player takes {damage} damage. Health is now: {playerHealth}");
+
+        return playerHealth;
     }
-    
-    public static void PlayerChallengeEnemy(QuestData questData)
+
+    public static int PlayerChallengeEnemy(string? enemyName, int playerStrength, int itemPower, int enemyPower)
     {
-        Output.AppendLine($"The player challenges {questData.EnemyName}!");
-        int playerAttackPower = questData.PlayerStrength + (questData.ItemPower > 0 ? questData.ItemPower / 2 : 0);
-        
-        if (playerAttackPower > questData.EnemyPower)
+        Output.AppendLine($"The player challenges {enemyName}!");
+        int playerAttackPower = playerStrength + (itemPower > 0 ? itemPower / 2 : 0);
+
+        if (playerAttackPower > enemyPower)
         {
-            questData.EnemyPower = questData.EnemyPower - (playerAttackPower / 2);
-            Output.AppendLine($"The player defeats the enemy! Enemy power reduced to {questData.EnemyPower}");
+            enemyPower = enemyPower - (playerAttackPower / 2);
+            Output.AppendLine($"The player defeats the enemy! Enemy power reduced to {enemyPower}");
         }
         else
         {
             Output.AppendLine("The enemy is too strong. The player retreats!");
         }
+
+        return enemyPower;
     }
 }

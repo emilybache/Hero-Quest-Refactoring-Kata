@@ -33,7 +33,8 @@ public class HeroQuestTest
     [Fact]
     void PlayerToString()
     {
-        string result = HeroQuest.PlayerToString(_questData);
+        string result = HeroQuest.PlayerToString(_questData.PlayerName, _questData.PlayerHealth,
+            _questData.PlayerStrength, _questData.PlayerMagic, _questData.PlayerCraftingSkill);
 
         var expected = "Conan's Attributes:\nHealth: 100\nStrength: 20\nMagic: " +
                        "10\nCrafting " +
@@ -46,21 +47,21 @@ public class HeroQuestTest
     void PlayerFallsDown()
     {
         _questData.PlayerStrength = 3;
-        HeroQuest.PlayerFallsDown(_questData);
+        _questData.PlayerHealth = HeroQuest.PlayerFallsDown(_questData.PlayerStrength, _questData.PlayerHealth);
         Assert.Equal(90, _questData.PlayerHealth);
     }
 
     [Fact]
     void PlayerFallsDownNoDamage()
     {
-        HeroQuest.PlayerFallsDown(_questData);
+        _questData.PlayerHealth = HeroQuest.PlayerFallsDown(_questData.PlayerStrength, _questData.PlayerHealth);
         Assert.Equal(100, _questData.PlayerHealth);
     }
 
     [Fact]
     void ItemToString()
     {
-        var result = HeroQuest.ItemToString(_questData);
+        var result = HeroQuest.ItemToString(_questData.ItemName, _questData.ItemKind, _questData.ItemPower);
         var expected = "Item: Amulet of Strength\nKind: Strength\nPower: 10\n";
         Assert.Equal(expected, result);
     }
@@ -68,7 +69,8 @@ public class HeroQuestTest
     [Fact]
     void ItemReduceByUsage()
     {
-        HeroQuest.ItemReduceByUsage(_questData);
+        (_questData.ItemKind, _questData.ItemPower) =
+            HeroQuest.ItemReduceByUsage(_questData.ItemKind, _questData.ItemPower);
         Assert.Equal(5, _questData.ItemPower);
     }
 
@@ -76,7 +78,8 @@ public class HeroQuestTest
     void ItemReduceByUsageToJunk()
     {
         _questData.ItemPower = 1;
-        HeroQuest.ItemReduceByUsage(_questData);
+        (_questData.ItemKind, _questData.ItemPower) =
+            HeroQuest.ItemReduceByUsage(_questData.ItemKind, _questData.ItemPower);
         Assert.Equal(0, _questData.ItemPower);
         Assert.Equal("Junk", _questData.ItemKind);
     }
@@ -84,7 +87,9 @@ public class HeroQuestTest
     [Fact]
     void ItemApplyEffectToPlayer()
     {
-        HeroQuest.ItemApplyEffectToPlayer(_questData);
+        (_questData.PlayerHealth, _questData.PlayerStrength, _questData.PlayerMagic) =
+            HeroQuest.ItemApplyEffectToPlayer(_questData.ItemName, _questData.ItemKind, _questData.ItemPower,
+                _questData.PlayerHealth, _questData.PlayerStrength, _questData.PlayerMagic);
         Assert.Equal(30, _questData.PlayerStrength);
     }
 
@@ -92,24 +97,25 @@ public class HeroQuestTest
     void ItemApplyEffectToPlayerJunk()
     {
         _questData.ItemKind = "Junk";
-        HeroQuest.ItemApplyEffectToPlayer(_questData);
+        (_questData.PlayerHealth, _questData.PlayerStrength, _questData.PlayerMagic) =
+            HeroQuest.ItemApplyEffectToPlayer(_questData.ItemName, _questData.ItemKind, _questData.ItemPower,
+                _questData.PlayerHealth, _questData.PlayerStrength, _questData.PlayerMagic);
         Assert.Equal(20, _questData.PlayerStrength);
     }
 
     [Fact]
     void ItemRepair()
     {
-        HeroQuest.ItemRepair(_questData);
+        _questData.ItemPower = HeroQuest.ItemRepair(_questData.PlayerCraftingSkill, _questData.ItemPower);
         Assert.Equal(26, _questData.ItemPower);
     }
 
     [Fact]
     void EnemyToString()
     {
-        
-        var result = HeroQuest.EnemyToString(_questData);
+        var result = HeroQuest.EnemyToString(_questData.EnemyName, _questData.EnemyPower);
         var expected = "Enemy: Goblin\nPower: 10\n";
-        
+
         Assert.Equal(expected, result);
     }
 
@@ -118,9 +124,10 @@ public class HeroQuestTest
     {
         _questData.EnemyPower = 25;
         _questData.PlayerStrength = 5;
-        
-        HeroQuest.EnemyAttackPlayer(_questData);
-        
+
+        _questData.PlayerHealth = HeroQuest.EnemyAttackPlayer(_questData.EnemyName, _questData.EnemyPower,
+            _questData.PlayerStrength, _questData.PlayerHealth);
+
         Assert.Equal(75, _questData.PlayerHealth);
     }
 
@@ -128,9 +135,10 @@ public class HeroQuestTest
     void EnemyAttackPlayerReducedDamage()
     {
         _questData.PlayerStrength = 15;
-        
-        HeroQuest.EnemyAttackPlayer(_questData);
-        
+
+        _questData.PlayerHealth = HeroQuest.EnemyAttackPlayer(_questData.EnemyName, _questData.EnemyPower,
+            _questData.PlayerStrength, _questData.PlayerHealth);
+
         Assert.Equal(95, _questData.PlayerHealth);
     }
 
@@ -138,9 +146,10 @@ public class HeroQuestTest
     void PlayerChallengeEnemyWins()
     {
         _questData.PlayerStrength = 25;
-        
-        HeroQuest.PlayerChallengeEnemy(_questData);
-        
+
+        _questData.EnemyPower = HeroQuest.PlayerChallengeEnemy(_questData.EnemyName, _questData.PlayerStrength,
+            _questData.ItemPower, _questData.EnemyPower);
+
         Assert.Equal(-5, _questData.EnemyPower);
     }
 
@@ -150,9 +159,10 @@ public class HeroQuestTest
         _questData.EnemyPower = 50;
         _questData.PlayerStrength = 10;
         _questData.ItemPower = 5;
-        
-        HeroQuest.PlayerChallengeEnemy(_questData);
-        
+
+        _questData.EnemyPower = HeroQuest.PlayerChallengeEnemy(_questData.EnemyName, _questData.PlayerStrength,
+            _questData.ItemPower, _questData.EnemyPower);
+
         Assert.Equal(50, _questData.EnemyPower);
     }
 
@@ -162,9 +172,10 @@ public class HeroQuestTest
         _questData.EnemyPower = 20;
         _questData.PlayerStrength = 22;
         _questData.ItemPower = 0;
-        
-        HeroQuest.PlayerChallengeEnemy(_questData);
-        
+
+        _questData.EnemyPower = HeroQuest.PlayerChallengeEnemy(_questData.EnemyName, _questData.PlayerStrength,
+            _questData.ItemPower, _questData.EnemyPower);
+
         Assert.Equal(9, _questData.EnemyPower);
     }
 
@@ -173,9 +184,11 @@ public class HeroQuestTest
     {
         _questData.ItemKind = "Magic";
         _questData.ItemPower = 15;
-        
-        HeroQuest.ItemApplyEffectToPlayer(_questData);
-        
+
+        (_questData.PlayerHealth, _questData.PlayerStrength, _questData.PlayerMagic) =
+            HeroQuest.ItemApplyEffectToPlayer(_questData.ItemName, _questData.ItemKind, _questData.ItemPower,
+                _questData.PlayerHealth, _questData.PlayerStrength, _questData.PlayerMagic);
+
         Assert.Equal(25, _questData.PlayerMagic);
     }
 
@@ -184,9 +197,11 @@ public class HeroQuestTest
     {
         _questData.ItemKind = "Health";
         _questData.ItemPower = 20;
-        
-        HeroQuest.ItemApplyEffectToPlayer(_questData);
-        
+
+        (_questData.PlayerHealth, _questData.PlayerStrength, _questData.PlayerMagic) =
+            HeroQuest.ItemApplyEffectToPlayer(_questData.ItemName, _questData.ItemKind, _questData.ItemPower,
+                _questData.PlayerHealth, _questData.PlayerStrength, _questData.PlayerMagic);
+
         Assert.Equal(120, _questData.PlayerHealth);
     }
 }
