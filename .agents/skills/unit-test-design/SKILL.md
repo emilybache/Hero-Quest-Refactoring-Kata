@@ -4,4 +4,4 @@ description: Design unit tests
 ---
 
 * Stack replies with emoji: ✅
-* Use XUnit
+* For C#, use XUnit
