@@ -7,6 +7,10 @@ You can use this exercise to practice turning Data Clumps into classes.
 
 There is a write-up for a full learning hour using this exercise [Extracting data Clumps](https://sammancoaching.org/learning_hours/refactoring/extracting_data_clumps.html).
 
+Setup for coding agents
+-----------------------
+There is a top level [AGENTS.md](AGENTS.md) for all language versions, and a [.agents](.agents) folder for skills etc. There is a branch 'with_skills' that includes a sample skill for refactoring data clumps into classes.
+
 Acknowledgements
 ----------------
 
