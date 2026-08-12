@@ -7,25 +7,32 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HeroQuestTest {
 
-    private QuestData questData;
+    private String playerName;
+    private int playerHealth;
+    private int playerStrength;
+    private int playerMagic;
+    private int playerCraftingSkill;
+    private String itemName;
+    private String itemKind;
+    private int itemPower;
 
     @BeforeEach
     void SetUp() {
-        questData = new QuestData();
-        questData.setPlayerName("Conan");
-        questData.setPlayerHealth(100);
-        questData.setPlayerStrength(20);
-        questData.setPlayerMagic(10);
-        questData.setPlayerCraftingSkill(10);
-        questData.setItemName("Amulet of Strength");
-        questData.setItemKind("Strength");
-        questData.setItemPower(10);
+        HeroQuest.output.setLength(0);
+        playerName = "Conan";
+        playerHealth = 100;
+        playerStrength = 20;
+        playerMagic = 10;
+        playerCraftingSkill = 10;
+        itemName = "Amulet of Strength";
+        itemKind = "Strength";
+        itemPower = 10;
     }
 
     @Test
     void playerToString() {
-        var result = HeroQuest.playerToString(questData.getPlayerName(),
-                questData.getPlayerHealth(), questData.getPlayerStrength(), questData.getPlayerMagic(), questData.getPlayerCraftingSkill());
+        var result = HeroQuest.playerToString(playerName,
+                playerHealth, playerStrength, playerMagic, playerCraftingSkill);
 
         var expected = "Conan's Attributes:\nHealth: 100\nStrength: 20\nMagic: " +
                 "10\nCrafting " +
@@ -36,54 +43,59 @@ public class HeroQuestTest {
 
     @Test
     void playerFallsDown() {
-        questData.setPlayerStrength(3);
-        HeroQuest.playerFallsDown(questData);
-        assertEquals(90, questData.getPlayerHealth());
+        playerStrength = 3;
+        playerHealth = HeroQuest.playerFallsDown(playerStrength, playerHealth);
+        assertEquals(90, playerHealth);
     }
 
     @Test
     void playerFallsDownNoDamage() {
-        HeroQuest.playerFallsDown(questData);
-        assertEquals(100, questData.getPlayerHealth());
+        playerHealth = HeroQuest.playerFallsDown(playerStrength, playerHealth);
+        assertEquals(100, playerHealth);
     }
 
     @Test
     void itemToString() {
-        var result = HeroQuest.itemToString(questData.getItemName(), questData.getItemKind(), questData.getItemPower());
+        var result = HeroQuest.itemToString(itemName, itemKind, itemPower);
         var expected = "Item: Amulet of Strength\nKind: Strength\nPower: 10\n";
         assertEquals(expected, result);
     }
 
     @Test
     void itemReduceByUsage() {
-        HeroQuest.itemReduceByUsage(questData);
-        assertEquals(5, questData.getItemPower());
+        HeroQuest.ItemUsageResult result = HeroQuest.itemReduceByUsage(itemKind, itemPower);
+        itemPower = result.itemPower;
+        assertEquals(5, itemPower);
     }
 
     @Test
     void itemReduceByUsageToJunk() {
-        questData.setItemPower(1);
-        HeroQuest.itemReduceByUsage(questData);
-        assertEquals(0, questData.getItemPower());
-        assertEquals("Junk", questData.getItemKind());
+        itemPower = 1;
+        HeroQuest.ItemUsageResult result = HeroQuest.itemReduceByUsage(itemKind, itemPower);
+        itemPower = result.itemPower;
+        itemKind = result.itemKind;
+        assertEquals(0, itemPower);
+        assertEquals("Junk", itemKind);
     }
 
     @Test
     void itemApplyEffectToPlayer() {
-        HeroQuest.itemApplyEffectToPlayer(questData);
-        assertEquals(30, questData.getPlayerStrength());
+        HeroQuest.ItemEffectResult result = HeroQuest.itemApplyEffectToPlayer(itemName, itemKind, itemPower, playerHealth, playerStrength, playerMagic);
+        playerStrength = result.playerStrength;
+        assertEquals(30, playerStrength);
     }
 
     @Test
     void itemApplyEffectToPlayerJunk() {
-        questData.setItemKind("Junk");
-        HeroQuest.itemApplyEffectToPlayer(questData);
-        assertEquals(20, questData.getPlayerStrength());
+        itemKind = "Junk";
+        HeroQuest.ItemEffectResult result = HeroQuest.itemApplyEffectToPlayer(itemName, itemKind, itemPower, playerHealth, playerStrength, playerMagic);
+        playerStrength = result.playerStrength;
+        assertEquals(20, playerStrength);
     }
 
     @Test
     void itemRepair() {
-        HeroQuest.itemRepair(questData);
-        assertEquals(26, questData.getItemPower());
+        itemPower = HeroQuest.itemRepair(playerCraftingSkill, itemPower);
+        assertEquals(26, itemPower);
     }
 }

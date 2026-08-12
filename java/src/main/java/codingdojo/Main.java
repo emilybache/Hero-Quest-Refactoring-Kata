@@ -1,44 +1,22 @@
 package codingdojo;
 
-import static codingdojo.HeroQuest.itemApplyEffectToPlayer;
-import static codingdojo.HeroQuest.itemReduceByUsage;
-import static codingdojo.HeroQuest.itemRepair;
-import static codingdojo.HeroQuest.itemToString;
-import static codingdojo.HeroQuest.playerToString;
-
 public class Main {
-
     public static void main(String[] args) {
+        HeroQuest.output = new StringBuilder();
+
         QuestData questData = new QuestData();
-        questData.setPlayerName("Conan");
-        questData.setPlayerHealth(100);
-        questData.setPlayerStrength(20);
-        questData.setPlayerMagic(10);
-        questData.setPlayerCraftingSkill(10);
-        questData.setItemName("Amulet of Strength");
-        questData.setItemKind("Strength");
-        questData.setItemPower(10);
+        questData.playerName = "Conan";
+        questData.playerHealth = 100;
+        questData.playerStrength = 7;
+        questData.playerMagic = 15;
+        questData.playerCraftingSkill = 12;
+        questData.itemName = "Healing Potion";
+        questData.itemKind = "Health";
+        questData.itemPower = 20;
+        questData.enemyName = "Goblin Warlord";
+        questData.enemyPower = 12;
 
-        String result = playerToString(questData.getPlayerName(),
-                questData.getPlayerHealth(), questData.getPlayerStrength(), questData.getPlayerMagic(), questData.getPlayerCraftingSkill());
-        System.out.printf("Player at begin\n%s\n", result);
-
-        result = itemToString(questData.getItemName(), questData.getItemKind(), questData.getItemPower());
-        System.out.printf("Player found an item\n%s\n", result);
-
-        itemApplyEffectToPlayer(questData);
-        itemReduceByUsage(questData);
-
-        result = HeroQuest.playerToString(questData.getPlayerName(),
-                questData.getPlayerHealth(), questData.getPlayerStrength(), questData.getPlayerMagic(), questData.getPlayerCraftingSkill());
-        System.out.printf("Player now\n%s\n", result);
-
-        result = itemToString(questData.getItemName(), questData.getItemKind(), questData.getItemPower());
-        System.out.printf("Item now\n%s\n", result);
-
-        System.out.printf("Player tries to repair item...\n");
-        itemRepair(questData);
-        result = itemToString(questData.getItemName(), questData.getItemKind(), questData.getItemPower());
-        System.out.printf("Item now\n%s\n", result);
+        System.out.println(HeroQuest.playerToString(questData.playerName, questData.playerHealth, questData.playerStrength,
+                questData.playerMagic, questData.playerCraftingSkill));
     }
 }
