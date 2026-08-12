@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HeroQuestAcceptanceTest FullScenario 1`] = `
+"=== QUEST BEGINNING ===
+
+Conan's Attributes:
+Health: 100
+Strength: 7
+Magic: 15
+Crafting Skill: 12
+
+Item: Healing Potion
+Kind: Health
+Power: 20
+
+--- Exploring the dungeon... ---
+
+Conan's Attributes:
+Health: 100
+Strength: 7
+Magic: 15
+Crafting Skill: 12
+
+--- Using the healing item ---
+
+Conan's Attributes:
+Health: 120
+Strength: 7
+Magic: 15
+Crafting Skill: 12
+
+Item: Healing Potion
+Kind: Health
+Power: 20
+
+--- Item degradation from repeated use ---
+
+Item: Healing Potion
+Kind: Health
+Power: 10
+
+Item: Healing Potion
+Kind: Health
+Power: 5
+
+--- Repairing the damaged item ---
+
+Item: Healing Potion
+Kind: Health
+Power: 25
+
+=== ENEMY ENCOUNTER ===
+
+Enemy: Goblin Warlord
+Power: 12
+
+Conan's Attributes:
+Health: 108
+Strength: 7
+Magic: 15
+Crafting Skill: 12
+
+--- Player retaliates ---
+
+Enemy: Goblin Warlord
+Power: 3
+
+"
+`;

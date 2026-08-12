@@ -3,52 +3,92 @@ class HeroQuest {
         return `${playerName}'s Attributes:\nHealth: ${playerHealth}\nStrength: ${playerStrength}\nMagic: ${playerMagic}\nCrafting Skill: ${playerCraftingSkill}\n`;
     }
 
-    static playerFallsDown(questData) {
-        console.log("Player drops off a cliff.");
-
-        if (questData.playerStrength < 5) {
-            questData.playerHealth -= 10;
-            console.log("Player's strength is too small. Health decreases by 10.");
-        }
+    static enemyToString(enemyName, enemyPower) {
+        return `Enemy: ${enemyName}\nPower: ${enemyPower}\n`;
     }
 
     static itemToString(itemName, itemKind, itemPower) {
         return `Item: ${itemName}\nKind: ${itemKind}\nPower: ${itemPower}\n`;
     }
 
-    static itemReduceByUsage(questData) {
-        console.log(`Using the item with kind '${questData.itemKind}' and power ${questData.itemPower}`);
+    static playerFallsDown(playerStrength, playerHealth) {
+        console.log("Player drops off a cliff.");
 
-        questData.itemPower = Math.floor(questData.itemPower / 2);
-
-        if (questData.itemPower === 0) {
-            questData.itemKind = "Junk";
+        if (playerStrength < 5) {
+            playerHealth -= 10;
+            console.log("Player's strength is too small. Health decreases by 10.");
         }
+
+        return playerHealth;
     }
 
-    static itemApplyEffectToPlayer(questData) {
-        console.log(`Applying the effect of ${questData.itemName} (${questData.itemKind}):`);
+    static itemReduceByUsage(itemKind, itemPower) {
+        console.log(`Using the item with kind '${itemKind}' and power ${itemPower}`);
 
-        if (questData.itemKind === "Health") {
-            questData.playerHealth += questData.itemPower;
-        } else if (questData.itemKind === "Strength") {
-            questData.playerStrength += questData.itemPower;
-        } else if (questData.itemKind === "Magic") {
-            questData.playerMagic += questData.itemPower;
+        itemPower = Math.floor(itemPower / 2);
+
+        if (itemPower === 0) {
+            itemKind = "Junk";
+        }
+
+        return { itemKind, itemPower };
+    }
+
+    static itemApplyEffectToPlayer(itemName, itemKind, itemPower, playerHealth, playerStrength, playerMagic) {
+        console.log(`Applying the effect of ${itemName} (${itemKind}):`);
+
+        if (itemKind === "Health") {
+            playerHealth += itemPower;
+        } else if (itemKind === "Strength") {
+            playerStrength += itemPower;
+        } else if (itemKind === "Magic") {
+            playerMagic += itemPower;
         } else {
             // ignore unknown item kind
-
         }
+
+        return { playerHealth, playerStrength, playerMagic };
     }
 
-    static itemRepair(questData) {
+    static itemRepair(playerCraftingSkill, itemPower) {
         console.log("Using the repair skill to fix the item:");
 
-        let repairAmount = -5 + ((questData.playerCraftingSkill * 2) + 1);
+        let repairAmount = -5 + (playerCraftingSkill * 2) + 1;
 
-        questData.itemPower += repairAmount;
+        itemPower += repairAmount;
 
-        console.log(`Repaired the item by ${repairAmount} points. Item's Durability: ${questData.itemPower}`);
+        console.log(`Repaired the item by ${repairAmount} points. Item's Durability: ${itemPower}`);
+
+        return itemPower;
+    }
+
+    static enemyAttackPlayer(enemyName, enemyPower, playerStrength, playerHealth) {
+        console.log(`The enemy '${enemyName}' attacks!`);
+        let damage = enemyPower;
+
+        if (playerStrength > enemyPower) {
+            damage = Math.floor(damage / 2);
+            console.log("Player's strength allows them to reduce the damage!");
+        }
+
+        playerHealth -= damage;
+        console.log(`Player takes ${damage} damage. Health is now: ${playerHealth}`);
+
+        return playerHealth;
+    }
+
+    static playerChallengeEnemy(enemyName, playerStrength, itemPower, enemyPower) {
+        console.log(`The player challenges ${enemyName}!`);
+        let playerAttackPower = playerStrength + (itemPower > 0 ? Math.floor(itemPower / 2) : 0);
+
+        if (playerAttackPower > enemyPower) {
+            enemyPower -= Math.floor(playerAttackPower / 2);
+            console.log(`The player defeats the enemy! Enemy power reduced to ${enemyPower}`);
+        } else {
+            console.log("The enemy is too strong. The player retreats!");
+        }
+
+        return enemyPower;
     }
 }
 
