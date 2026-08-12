@@ -10,34 +10,40 @@ public class Main {
 
     public static void main(String[] args) {
         var playerName = "Conan";
-        var playerHealth = new int[] { 100 };
-        var playerStrength = new int[] { 20 };
-        var playerMagic = new int[] { 10 };
+        var playerHealth = 100;
+        var playerStrength = 20;
+        var playerMagic = 10;
         var playerCraftingSkill = 10;
         var amuletItemName = "Amulet of Strength";
-        var amuletItemKind = new String[] { "Strength" };
-        var amuletItemPower = new int[] { 10 };
+        var amuletItemKind = "Strength";
+        var amuletItemPower = 10;
 
-        String result = playerToString(playerName, playerHealth[0], playerStrength[0], playerMagic[0],
+        String result = playerToString(playerName, playerHealth, playerStrength, playerMagic,
                 playerCraftingSkill);
         System.out.printf("Player at begin\n%s\n", result);
 
-        result = itemToString(amuletItemName, amuletItemKind[0], amuletItemPower[0]);
+        result = itemToString(amuletItemName, amuletItemKind, amuletItemPower);
         System.out.printf("Player found an item\n%s\n", result);
 
-        itemApplyEffectToPlayer(amuletItemName, amuletItemKind, amuletItemPower[0], playerHealth, playerStrength,
+        HeroQuest.ItemEffectResult effectResult = itemApplyEffectToPlayer(amuletItemName, amuletItemKind, amuletItemPower, playerHealth, playerStrength,
                 playerMagic);
-        itemReduceByUsage(amuletItemKind, amuletItemPower);
+        playerHealth = effectResult.playerHealth;
+        playerStrength = effectResult.playerStrength;
+        playerMagic = effectResult.playerMagic;
 
-        result = playerToString(playerName, playerHealth[0], playerStrength[0], playerMagic[0], playerCraftingSkill);
+        HeroQuest.ItemUsageResult usageResult = itemReduceByUsage(amuletItemKind, amuletItemPower);
+        amuletItemKind = usageResult.itemKind;
+        amuletItemPower = usageResult.itemPower;
+
+        result = playerToString(playerName, playerHealth, playerStrength, playerMagic, playerCraftingSkill);
         System.out.printf("Player now\n%s\n", result);
 
-        result = itemToString(amuletItemName, amuletItemKind[0], amuletItemPower[0]);
+        result = itemToString(amuletItemName, amuletItemKind, amuletItemPower);
         System.out.printf("Item now\n%s\n", result);
 
         System.out.printf("Player tries to repair item...\n");
-        itemRepair(amuletItemPower, playerCraftingSkill);
-        result = itemToString(amuletItemName, amuletItemKind[0], amuletItemPower[0]);
+        amuletItemPower = itemRepair(playerCraftingSkill, amuletItemPower);
+        result = itemToString(amuletItemName, amuletItemKind, amuletItemPower);
         System.out.printf("Item now\n%s\n", result);
     }
 }

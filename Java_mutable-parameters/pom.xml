@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.codingdojo</groupId>
-    <artifactId>HeroQuest-mutable-parameters</artifactId>
+    <artifactId>HeroQuest</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <properties>
@@ -45,9 +45,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <!-- at least 14 to support records -->
-                    <source>14</source>
-                    <target>14</target>
+                    <!-- at least 17 to support records properly and matches recent Java -->
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
             <plugin>
