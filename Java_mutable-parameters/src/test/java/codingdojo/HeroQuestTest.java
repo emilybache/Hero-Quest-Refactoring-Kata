@@ -15,12 +15,12 @@ public class HeroQuestTest {
     private String itemName;
     private String[] itemKind;
     private int[] itemPower;
-
     private String enemyName;
     private int[] enemyPower;
 
     @BeforeEach
     void SetUp() {
+        HeroQuest.output.setLength(0);
         playerName = "Conan";
         playerHealth = new int[] { 100 };
         playerStrength = new int[] { 20 };
@@ -29,27 +29,8 @@ public class HeroQuestTest {
         itemName = "Amulet of Strength";
         itemKind = new String[] { "Strength" };
         itemPower = new int[] { 10 };
-        enemyName = "Goblin Warlord";
-        enemyPower = new int[] { 12 };
-    }
-
-    @Test
-    void enemyToString() {
-        var result = HeroQuest.enemyToString(enemyName, enemyPower[0]);
-        var expected = "Enemy: Goblin Warlord\nPower: 12\n";
-        assertEquals(expected, result);
-    }
-
-    @Test
-    void enemyAttackPlayer() {
-        HeroQuest.enemyAttackPlayer(enemyName, enemyPower[0], playerStrength, playerHealth);
-        assertEquals(94, playerHealth[0]);
-    }
-
-    @Test
-    void playerChallengeEnemy() {
-        HeroQuest.playerChallengeEnemy(enemyName, playerStrength, itemPower, enemyPower);
-        assertEquals(0, enemyPower[0]);
+        enemyName = "Goblin";
+        enemyPower = new int[] { 5 };
     }
 
     @Test
@@ -107,7 +88,7 @@ public class HeroQuestTest {
     @Test
     void itemApplyEffectToPlayerJunk() {
         itemKind[0] = "Junk";
-        HeroQuest.itemApplyEffectToPlayer(itemName,itemKind, itemPower[0], playerHealth, playerStrength, playerMagic);
+        HeroQuest.itemApplyEffectToPlayer(itemName, itemKind, itemPower[0], playerHealth, playerStrength, playerMagic);
         assertEquals(20, playerStrength[0]);
     }
 
@@ -115,5 +96,24 @@ public class HeroQuestTest {
     void itemRepair() {
         HeroQuest.itemRepair(itemPower, playerCraftingSkill);
         assertEquals(26, itemPower[0]);
+    }
+
+    @Test
+    void enemyToString() {
+        var result = HeroQuest.enemyToString(enemyName, enemyPower[0]);
+        var expected = "Enemy: Goblin\nPower: 5\n";
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void enemyAttackPlayer() {
+        HeroQuest.enemyAttackPlayer(enemyName, enemyPower[0], playerStrength, playerHealth);
+        assertEquals(98, playerHealth[0]);
+    }
+
+    @Test
+    void playerChallengeEnemy() {
+        HeroQuest.playerChallengeEnemy(enemyName, playerStrength, itemPower, enemyPower);
+        assertEquals(-7, enemyPower[0]);
     }
 }

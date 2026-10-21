@@ -1,0 +1,8 @@
+exit-status: 0
+
+tests:
+  - name: "FullScenario"
+    command: "quest"
+    stdout:
+      file: AcceptanceTest.FullScenario.snap
+    stderr: ""

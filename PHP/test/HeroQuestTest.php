@@ -15,8 +15,11 @@ class HeroQuestTest extends TestCase {
     private $itemName;
     private $itemKind;
     private $itemPower;
+    private $enemyName;
+    private $enemyPower;
 
     protected function setUp(): void {
+        \CodingDojo\HeroQuest::$output = [];
         $this->playerName = "Conan";
         $this->playerHealth = 100;
         $this->playerStrength = 20;
@@ -25,6 +28,8 @@ class HeroQuestTest extends TestCase {
         $this->itemName = "Amulet of Strength";
         $this->itemKind = "Strength";
         $this->itemPower = 10;
+        $this->enemyName = "Goblin";
+        $this->enemyPower = 5;
     }
 
     public function testPlayerToString() {
@@ -103,5 +108,21 @@ class HeroQuestTest extends TestCase {
     public function testItemRepair() {
         HeroQuest::itemRepair($this->playerCraftingSkill, $this->itemPower);
         $this->assertEquals(26, $this->itemPower);
+    }
+
+    public function testEnemyToString() {
+        $result = HeroQuest::enemyToString($this->enemyName, $this->enemyPower);
+        $expected = "Enemy: Goblin\nPower: 5\n";
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testEnemyAttackPlayer() {
+        HeroQuest::enemyAttackPlayer($this->enemyName, $this->enemyPower, $this->playerStrength, $this->playerHealth);
+        $this->assertEquals(98, $this->playerHealth);
+    }
+
+    public function testPlayerChallengeEnemy() {
+        HeroQuest::playerChallengeEnemy($this->enemyName, $this->playerStrength, $this->itemPower, $this->enemyPower);
+        $this->assertEquals(-7, $this->enemyPower);
     }
 }

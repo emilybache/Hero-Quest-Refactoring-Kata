@@ -1,0 +1,39 @@
+name: Test dotnet-csharp_by-reference
+
+on:
+  push:
+    paths:
+      - 'dotnet-csharp_by-reference/**'
+      - '.github/workflows/dotnet-csharp_by-reference.yml'
+  pull_request:
+    paths:
+      - 'dotnet-csharp_by-reference/**'
+      - '.github/workflows/dotnet-csharp_by-reference.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.x'
+          cache: true
+          cache-dependency-path: dotnet-csharp_by-reference/HeroQuest.Test/packages.lock.json
+
+      - name: Set up dependencies
+        working-directory: dotnet-csharp_by-reference
+        run: dotnet restore --locked-mode
+
+      - name: Build and test
+        working-directory: dotnet-csharp_by-reference
+        run: dotnet test
+
+      - name: Run
+        working-directory: dotnet-csharp_by-reference
+        run: |
+          cd HeroQuest
+          dotnet run

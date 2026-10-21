@@ -1,0 +1,39 @@
+name: Test dotnet-csharp_dataclass
+
+on:
+  push:
+    paths:
+      - 'dotnet-csharp_dataclass/**'
+      - '.github/workflows/dotnet-csharp_dataclass.yml'
+  pull_request:
+    paths:
+      - 'dotnet-csharp_dataclass/**'
+      - '.github/workflows/dotnet-csharp_dataclass.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.x'
+          cache: true
+          cache-dependency-path: dotnet-csharp_dataclass/HeroQuest.Test/packages.lock.json
+
+      - name: Set up dependencies
+        working-directory: dotnet-csharp_dataclass
+        run: dotnet restore --locked-mode
+
+      - name: Build and test
+        working-directory: dotnet-csharp_dataclass
+        run: dotnet test
+
+      - name: Run
+        working-directory: dotnet-csharp_dataclass
+        run: |
+          cd HeroQuest
+          dotnet run

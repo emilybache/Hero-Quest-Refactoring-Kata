@@ -6,7 +6,8 @@ from hero_quest import QuestData, HeroQuest
 class HeroQuestTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.quest_data = QuestData("Conan", 100, 20, 10, 10, "Amulet of Strength", "Strength", 10)
+        HeroQuest.output = []
+        self.quest_data = QuestData("Conan", 100, 20, 10, 10, "Amulet of Strength", "Strength", 10, "Goblin", 5)
 
     def test_player_to_string(self) -> None:
         result = HeroQuest.player_to_string(self.quest_data.player_name, self.quest_data.player_health,
@@ -61,6 +62,19 @@ class HeroQuestTestCase(unittest.TestCase):
         HeroQuest.item_repair(self.quest_data)
 
         assert 26 == self.quest_data.item_power
+
+    def test_enemy_to_string(self):
+        result = HeroQuest.enemy_to_string(self.quest_data.enemy_name, self.quest_data.enemy_power)
+        expected = "Enemy: Goblin\nPower: 5\n"
+        assert result == expected
+
+    def test_enemy_attack_player(self):
+        HeroQuest.enemy_attack_player(self.quest_data)
+        assert 98 == self.quest_data.player_health
+
+    def test_player_challenge_enemy(self):
+        HeroQuest.player_challenge_enemy(self.quest_data)
+        assert -7 == self.quest_data.enemy_power
 
 
 if __name__ == '__main__':

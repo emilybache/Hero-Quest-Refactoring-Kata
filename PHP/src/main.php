@@ -4,31 +4,75 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use CodingDojo\HeroQuest;
 
-$playerName = "Conan";
-$playerHealth = 100;
-$playerStrength = 20;
-$playerMagic = 10;
-$playerCraftingSkill = 10;
-$itemName = "Amulet of Strength";
-$itemKind = "Strength";
-$itemPower = 10;
+function run() {
+    $playerName = "Conan";
+    $playerHealth = 100;
+    $playerStrength = 7;
+    $playerMagic = 15;
+    $playerCraftingSkill = 12;
+    $itemName = "Healing Potion";
+    $itemKind = "Health";
+    $itemPower = 20;
+    $enemyName = "Goblin Warlord";
+    $enemyPower = 12;
 
-$result = HeroQuest::playerToString($playerName, $playerHealth, $playerStrength, $playerMagic, $playerCraftingSkill);
-printf("Player at begin\n%s\n", $result);
+    HeroQuest::$output[] = "=== QUEST BEGINNING ===\n\n";
 
-$result = HeroQuest::itemToString($itemName, $itemKind, $itemPower);
-printf("Player found an item\n%s\n", $result);
+    HeroQuest::$output[] = HeroQuest::playerToString($playerName, $playerHealth, $playerStrength, $playerMagic, $playerCraftingSkill);
+    HeroQuest::$output[] = "\n";
 
-HeroQuest::itemApplyEffectToPlayer($itemName, $itemKind, $itemPower, $playerHealth, $playerStrength, $playerMagic);
-HeroQuest::itemReduceByUsage($itemKind, $itemPower);
+    HeroQuest::$output[] = HeroQuest::itemToString($itemName, $itemKind, $itemPower);
+    HeroQuest::$output[] = "\n";
 
-$result = HeroQuest::playerToString($playerName, $playerHealth, $playerStrength, $playerMagic, $playerCraftingSkill);
-printf("Player now\n%s\n", $result);
+    HeroQuest::$output[] = "--- Exploring the dungeon... ---\n\n";
 
-$result = HeroQuest::itemToString($itemName, $itemKind, $itemPower);
-printf("Item now\n%s\n", $result);
+    HeroQuest::playerFallsDown($playerHealth, $playerStrength);
+    HeroQuest::$output[] = HeroQuest::playerToString($playerName, $playerHealth, $playerStrength, $playerMagic, $playerCraftingSkill);
+    HeroQuest::$output[] = "\n";
 
-printf("Player tries to repair item...\n");
-HeroQuest::itemRepair($playerCraftingSkill, $itemPower);
-$result = HeroQuest::itemToString($itemName, $itemKind, $itemPower);
-printf("Item now\n%s\n", $result);
+    HeroQuest::$output[] = "--- Using the healing item ---\n\n";
+
+    HeroQuest::itemApplyEffectToPlayer($itemName, $itemKind, $itemPower, $playerHealth, $playerStrength, $playerMagic);
+    HeroQuest::$output[] = HeroQuest::playerToString($playerName, $playerHealth, $playerStrength, $playerMagic, $playerCraftingSkill);
+    HeroQuest::$output[] = "\n";
+
+    HeroQuest::$output[] = HeroQuest::itemToString($itemName, $itemKind, $itemPower);
+    HeroQuest::$output[] = "\n";
+
+    HeroQuest::$output[] = "--- Item degradation from repeated use ---\n\n";
+
+    HeroQuest::itemReduceByUsage($itemKind, $itemPower);
+    HeroQuest::$output[] = HeroQuest::itemToString($itemName, $itemKind, $itemPower);
+    HeroQuest::$output[] = "\n";
+
+    HeroQuest::itemReduceByUsage($itemKind, $itemPower);
+    HeroQuest::$output[] = HeroQuest::itemToString($itemName, $itemKind, $itemPower);
+    HeroQuest::$output[] = "\n";
+
+    HeroQuest::$output[] = "--- Repairing the damaged item ---\n\n";
+
+    HeroQuest::itemRepair($playerCraftingSkill, $itemPower);
+    HeroQuest::$output[] = HeroQuest::itemToString($itemName, $itemKind, $itemPower);
+    HeroQuest::$output[] = "\n";
+
+    HeroQuest::$output[] = "=== ENEMY ENCOUNTER ===\n\n";
+
+    HeroQuest::$output[] = HeroQuest::enemyToString($enemyName, $enemyPower);
+    HeroQuest::$output[] = "\n";
+
+    HeroQuest::enemyAttackPlayer($enemyName, $enemyPower, $playerStrength, $playerHealth);
+    HeroQuest::$output[] = HeroQuest::playerToString($playerName, $playerHealth, $playerStrength, $playerMagic, $playerCraftingSkill);
+    HeroQuest::$output[] = "\n";
+
+    HeroQuest::$output[] = "--- Player retaliates ---\n\n";
+
+    HeroQuest::playerChallengeEnemy($enemyName, $playerStrength, $itemPower, $enemyPower);
+    HeroQuest::$output[] = HeroQuest::enemyToString($enemyName, $enemyPower);
+    HeroQuest::$output[] = "\n";
+}
+
+if (php_sapi_name() === 'cli' && basename(__FILE__) === basename($argv[0] ?? '')) {
+    HeroQuest::$output = [];
+    run();
+    echo implode("", HeroQuest::$output);
+}

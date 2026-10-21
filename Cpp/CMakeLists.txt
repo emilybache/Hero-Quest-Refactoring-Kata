@@ -16,19 +16,29 @@ target_include_directories(${SRC_LIB_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(quest main.cpp)
 target_link_libraries(quest ${SRC_LIB_NAME})
-set(TEST_NAME quest_test)
 
 include(FetchContent)
-set(SOURCE_FILES quest_catch.cpp)
 
 FetchContent_Declare(
         Catch2
         GIT_REPOSITORY https://github.com/catchorg/Catch2.git
         GIT_TAG        v2.13.10
-        GIT_SHALLOW    1)
+        GIT_SHALLOW    TRUE)
 FetchContent_MakeAvailable(Catch2)
 
-add_executable(${TEST_NAME})
-target_sources(${TEST_NAME} PRIVATE ${SOURCE_FILES})
-target_link_libraries(${TEST_NAME} ${SRC_LIB_NAME} Catch2::Catch2)
-add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
+FetchContent_Declare(
+        ApprovalTests
+        GIT_REPOSITORY https://github.com/approvals/ApprovalTests.cpp.git
+        GIT_TAG        v.10.13.0
+        GIT_SHALLOW    TRUE)
+FetchContent_MakeAvailable(ApprovalTests)
+
+add_executable(quest_unit_test)
+target_sources(quest_unit_test PRIVATE quest_catch.cpp)
+target_link_libraries(quest_unit_test ${SRC_LIB_NAME} Catch2::Catch2)
+add_test(NAME quest_unit_test COMMAND quest_unit_test)
+
+add_executable(quest_acceptance_test)
+target_sources(quest_acceptance_test PRIVATE quest_acceptance.cpp)
+target_link_libraries(quest_acceptance_test ${SRC_LIB_NAME} Catch2::Catch2 ApprovalTests::ApprovalTests)
+add_test(NAME quest_acceptance_test COMMAND quest_acceptance_test)

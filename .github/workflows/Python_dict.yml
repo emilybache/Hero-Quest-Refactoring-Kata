@@ -1,0 +1,42 @@
+name: Test Python_dict
+
+on:
+  push:
+    paths:
+      - 'Python_dict/**'
+      - '.github/workflows/Python_dict.yml'
+  pull_request:
+    paths:
+      - 'Python_dict/**'
+      - '.github/workflows/Python_dict.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.10", "3.12"]
+
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v7
+
+    - name: Set up Python
+      uses: actions/setup-python@v7
+      with:
+          python-version: ${{ matrix.python-version }}
+
+    - name: Set up dependencies
+      working-directory: Python
+      run: pip install -r requirements.txt
+
+    - name: Test
+      working-directory: Python_dict
+      run: |
+        python hero_quest_tests.py
+        python hero_quest_acceptance_test.py
+
+    - name: Run
+      working-directory: Python_dict
+      run: python main.py

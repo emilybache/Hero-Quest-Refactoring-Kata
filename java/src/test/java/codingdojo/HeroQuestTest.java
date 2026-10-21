@@ -15,6 +15,8 @@ public class HeroQuestTest {
     private String itemName;
     private String itemKind;
     private int itemPower;
+    private String enemyName;
+    private int enemyPower;
 
     @BeforeEach
     void SetUp() {
@@ -27,6 +29,8 @@ public class HeroQuestTest {
         itemName = "Amulet of Strength";
         itemKind = "Strength";
         itemPower = 10;
+        enemyName = "Goblin";
+        enemyPower = 5;
     }
 
     @Test
@@ -97,5 +101,24 @@ public class HeroQuestTest {
     void itemRepair() {
         itemPower = HeroQuest.itemRepair(playerCraftingSkill, itemPower);
         assertEquals(26, itemPower);
+    }
+
+    @Test
+    void enemyToString() {
+        var result = HeroQuest.enemyToString(enemyName, enemyPower);
+        var expected = "Enemy: Goblin\nPower: 5\n";
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void enemyAttackPlayer() {
+        playerHealth = HeroQuest.enemyAttackPlayer(enemyName, enemyPower, playerStrength, playerHealth);
+        assertEquals(98, playerHealth);
+    }
+
+    @Test
+    void playerChallengeEnemy() {
+        enemyPower = HeroQuest.playerChallengeEnemy(enemyName, playerStrength, itemPower, enemyPower);
+        assertEquals(-7, enemyPower);
     }
 }

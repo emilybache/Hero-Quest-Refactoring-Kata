@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out the repo
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
 
     - name: Build
       working-directory: Cpp
@@ -29,7 +29,8 @@ jobs:
       working-directory: Cpp
       run: |
         cd build
-        ./quest_test -r console -s
+        ./quest_unit_test -r console -s
+        ./quest_acceptance_test -r console -s
 
     - name: Run
       working-directory: Cpp

@@ -8,11 +8,14 @@ const char* testPlayerName = "Conan";
 int testPlayerHealth = 100;
 int testPlayerStrength = 20;
 int testPlayerMagic = 10;
-int testPlayerCraftingSkill = 10;
+int testPlayerCraftingSkill = 12;
 
-const char* testItemName = "Amulet of Strength";
-char* testItemKind = "Strength";
-int testItemPower = 10;
+const char* testItemName = "Healing Potion";
+const char* testItemKind = "Health";
+int testItemPower = 20;
+
+const char* testEnemyName = "Goblin";
+int testEnemyPower = 5;
 
 TEST_CASE("Quest")
 {
@@ -25,20 +28,10 @@ TEST_CASE("Quest")
         const char* expected =
             "Conan's Attributes:\nHealth: 100\nStrength: 20\nMagic: "
             "10\nCrafting "
-            "Skill: 10\n";
+            "Skill: 12\n";
         std::string expectedStr = expected;
         std::string actualStr = result;
         REQUIRE(expectedStr == actualStr);
-    }
-
-    SECTION("playerFallsDown")
-    {
-        testPlayerStrength = 3;
-        playerFallsDown(&testPlayerHealth, &testPlayerStrength);
-
-        REQUIRE(testPlayerHealth == 90);
-        testPlayerStrength = 20; // reset
-        testPlayerHealth = 100;  // reset
     }
 
     SECTION("playerFallsDownNoDamage")
@@ -48,13 +41,22 @@ TEST_CASE("Quest")
         REQUIRE(testPlayerHealth == 100);
     }
 
+    SECTION("playerFallsDown")
+    {
+        int playerStrength = 3;
+        int playerHealth = 100;
+        playerFallsDown(&playerHealth, &playerStrength);
+
+        REQUIRE(playerHealth == 90);
+    }
+
     SECTION("itemToString")
     {
         char result[256];
         itemToString(result, testItemName, testItemKind, testItemPower);
 
         const char* expected =
-            "Item: Amulet of Strength\nKind: Strength\nPower: 10\n";
+            "Item: Healing Potion\nKind: Health\nPower: 20\n";
         std::string expectedStr = expected;
         std::string actualStr = result;
         REQUIRE(expectedStr == actualStr);
@@ -62,51 +64,86 @@ TEST_CASE("Quest")
 
     SECTION("itemReduceByUsage")
     {
-        itemReduceByUsage(testItemKind, &testItemPower);
+        char itemKind[] = "Health";
+        int itemPower = 20;
+        itemReduceByUsage(itemKind, &itemPower);
 
-        REQUIRE(testItemPower == 5);
-        std::string expectedStr = testItemKind;
-        std::string actualStr = "Strength";
+        REQUIRE(itemPower == 10);
+        std::string expectedStr = itemKind;
+        std::string actualStr = "Health";
         REQUIRE(expectedStr == actualStr);
-        testItemPower = 10; // reset
     }
 
     SECTION("itemReduceByUsageToJunk")
     {
-        testItemPower = 1;
-        char itemKind[10] = "Strength";
-        itemReduceByUsage(itemKind, &testItemPower);
+        char itemKind[16] = "Health";
+        int itemPower = 1;
+        itemReduceByUsage(itemKind, &itemPower);
 
-        REQUIRE(testItemPower == 0);
+        REQUIRE(itemPower == 0);
         std::string expectedStr = itemKind;
         std::string actualStr = "Junk";
         REQUIRE(expectedStr == actualStr);
-        testItemPower = 10; // reset
     }
 
     SECTION("itemApplyEffectToPlayer")
     {
-        testItemPower = 10; // reset again, why?
-        itemApplyEffectToPlayer(testItemName, testItemKind, testItemPower, &testPlayerHealth,
-                                &testPlayerStrength, &testPlayerMagic);
+        int playerHealth = 100;
+        int playerStrength = 7;
+        int playerMagic = 15;
+        itemApplyEffectToPlayer(testItemName, testItemKind, testItemPower, &playerHealth,
+                                &playerStrength, &playerMagic);
 
-        REQUIRE(testPlayerStrength == 30);
-        testPlayerStrength = 20; // reset
+        REQUIRE(playerHealth == 120);
     }
 
     SECTION("itemApplyEffectToPlayerJunk")
     {
-        itemApplyEffectToPlayer(testItemName, "Junk", testItemPower, &testPlayerHealth,
-                                &testPlayerStrength, &testPlayerMagic);
+        int playerHealth = 100;
+        int playerStrength = 7;
+        int playerMagic = 15;
+        itemApplyEffectToPlayer(testItemName, "Junk", testItemPower, &playerHealth,
+                                &playerStrength, &playerMagic);
 
-        REQUIRE(testPlayerStrength == 20);
+        REQUIRE(playerHealth == 100);
+        REQUIRE(playerStrength == 7);
     }
 
     SECTION("itemRepair")
     {
-        itemRepair(&testItemPower, testPlayerCraftingSkill);
+        int itemPower = 20;
+        itemRepair(&itemPower, testPlayerCraftingSkill);
 
-        REQUIRE(testItemPower == 26);
-        testItemPower = 10; // reset
+        REQUIRE(itemPower == 40);
+    }
+
+    SECTION("enemyToString")
+    {
+        char result[256];
+        enemyToString(result, testEnemyName, testEnemyPower);
+
+        const char* expected = "Enemy: Goblin\nPower: 5\n";
+        std::string expectedStr = expected;
+        std::string actualStr = result;
+        REQUIRE(expectedStr == actualStr);
+    }
+
+    SECTION("enemyAttackPlayer")
+    {
+        int playerHealth = 100;
+        int playerStrength = 20;
+        enemyAttackPlayer(testEnemyName, testEnemyPower, playerStrength, &playerHealth);
+
+        REQUIRE(playerHealth == 98);
+    }
+
+    SECTION("playerChallengeEnemy")
+    {
+        int playerStrength = 20;
+        int itemPower = 10;
+        int enemyPower = 5;
+        playerChallengeEnemy(testEnemyName, playerStrength, itemPower, &enemyPower);
+
+        REQUIRE(enemyPower == -7);
     }
 }

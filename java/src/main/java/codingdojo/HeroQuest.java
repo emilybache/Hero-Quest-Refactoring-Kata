@@ -11,14 +11,6 @@ public class HeroQuest {
                 playerName, playerHealth, playerStrength, playerMagic, playerCraftingSkill);
     }
 
-    public static String enemyToString(String enemyName, int enemyPower) {
-        return String.format("Enemy: %s\nPower: %d\n", enemyName, enemyPower);
-    }
-
-    public static String itemToString(String itemName, String itemKind, int itemPower) {
-        return String.format("Item: %s\nKind: %s\nPower: %d\n", itemName, itemKind, itemPower);
-    }
-
     public static int playerFallsDown(int playerStrength, int playerHealth) {
         output.append("Player drops off a cliff.\n");
 
@@ -27,6 +19,10 @@ public class HeroQuest {
             output.append("Player's strength is too small. Health decreases by 10.\n");
         }
         return playerHealth;
+    }
+
+    public static String itemToString(String itemName, String itemKind, int itemPower) {
+        return String.format("Item: %s\nKind: %s\nPower: %d\n", itemName, itemKind, itemPower);
     }
 
     public static class ItemUsageResult {
@@ -85,6 +81,10 @@ public class HeroQuest {
         output.append(String.format("Repaired the item by %d points. Item's Durability: %d\n", //
                 repairAmount, itemPower));
         return itemPower;
+    }
+
+    public static String enemyToString(String enemyName, int enemyPower) {
+        return String.format("Enemy: %s\nPower: %d\n", enemyName, enemyPower);
     }
 
     public static int enemyAttackPlayer(String enemyName, int enemyPower, int playerStrength, int playerHealth) {

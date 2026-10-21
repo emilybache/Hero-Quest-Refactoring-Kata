@@ -1,15 +1,11 @@
 #ifndef HEROQUEST_H
 #define HEROQUEST_H
 
-extern char* playerName;
-extern int playerHealth;
-extern int playerStrength;
-extern int playerMagic;
-extern int playerCraftingSkill;
+extern char outputBuffer[8192];
+extern size_t outputLength;
 
-extern char* amuletItemName;
-extern char* amuletItemKind;
-extern int amuletItemPower;
+void resetOutput();
+void appendOutput(const char* str);
 
 void playerToString(char* result, //
                     const char* playerName,
@@ -35,5 +31,17 @@ void itemApplyEffectToPlayer(const char* itemName,
                              int* playerMagic);
 
 void itemRepair(int* itemPower, int playerCraftingSkill);
+
+void enemyToString(char* result, const char* enemyName, int enemyPower);
+
+void enemyAttackPlayer(const char* enemyName, //
+                       int enemyPower,
+                       int playerStrength,
+                       int* playerHealth);
+
+void playerChallengeEnemy(const char* enemyName, //
+                          int playerStrength,
+                          int itemPower,
+                          int* enemyPower);
 
 #endif // HEROQUEST_H

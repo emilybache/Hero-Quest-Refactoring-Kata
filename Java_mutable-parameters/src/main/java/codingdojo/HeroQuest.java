@@ -11,10 +11,6 @@ public class HeroQuest {
                 playerName, playerHealth, playerStrength, playerMagic, playerCraftingSkill);
     }
 
-    public static String enemyToString(String enemyName, int enemyPower) {
-        return String.format("Enemy: %s\nPower: %d\n", enemyName, enemyPower);
-    }
-
     public static void playerFallsDown(int[] playerHealth, int[] playerStrength) {
         output.append("Player drops off a cliff.\n");
 
@@ -61,6 +57,10 @@ public class HeroQuest {
 
         output.append(String.format("Repaired the item by %d points. Item's Durability: %d\n", //
                 repairAmount, itemPower[0]));
+    }
+
+    public static String enemyToString(String enemyName, int enemyPower) {
+        return String.format("Enemy: %s\nPower: %d\n", enemyName, enemyPower);
     }
 
     public static void enemyAttackPlayer(String enemyName, int enemyPower, int[] playerStrength, int[] playerHealth) {

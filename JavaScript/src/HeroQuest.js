@@ -1,4 +1,7 @@
+let output = [];
+
 class HeroQuest {
+
     static playerToString(playerName, playerHealth, playerStrength, playerMagic, playerCraftingSkill) {
         return `${playerName}'s Attributes:\nHealth: ${playerHealth}\nStrength: ${playerStrength}\nMagic: ${playerMagic}\nCrafting Skill: ${playerCraftingSkill}\n`;
     }
@@ -12,18 +15,18 @@ class HeroQuest {
     }
 
     static playerFallsDown(playerStrength, playerHealth) {
-        console.log("Player drops off a cliff.");
+        output.push("Player drops off a cliff.\n");
 
         if (playerStrength < 5) {
             playerHealth -= 10;
-            console.log("Player's strength is too small. Health decreases by 10.");
+            output.push("Player's strength is too small. Health decreases by 10.\n");
         }
 
         return playerHealth;
     }
 
     static itemReduceByUsage(itemKind, itemPower) {
-        console.log(`Using the item with kind '${itemKind}' and power ${itemPower}`);
+        output.push(`Using the item with kind '${itemKind}' and power ${itemPower}\n`);
 
         itemPower = Math.floor(itemPower / 2);
 
@@ -35,7 +38,7 @@ class HeroQuest {
     }
 
     static itemApplyEffectToPlayer(itemName, itemKind, itemPower, playerHealth, playerStrength, playerMagic) {
-        console.log(`Applying the effect of ${itemName} (${itemKind}):`);
+        output.push(`Applying the effect of ${itemName} (${itemKind}):\n`);
 
         if (itemKind === "Health") {
             playerHealth += itemPower;
@@ -51,41 +54,41 @@ class HeroQuest {
     }
 
     static itemRepair(playerCraftingSkill, itemPower) {
-        console.log("Using the repair skill to fix the item:");
+        output.push("Using the repair skill to fix the item:\n");
 
         let repairAmount = -5 + (playerCraftingSkill * 2) + 1;
 
         itemPower += repairAmount;
 
-        console.log(`Repaired the item by ${repairAmount} points. Item's Durability: ${itemPower}`);
+        output.push(`Repaired the item by ${repairAmount} points. Item's Durability: ${itemPower}\n`);
 
         return itemPower;
     }
 
     static enemyAttackPlayer(enemyName, enemyPower, playerStrength, playerHealth) {
-        console.log(`The enemy '${enemyName}' attacks!`);
+        output.push(`The enemy '${enemyName}' attacks!\n`);
         let damage = enemyPower;
 
         if (playerStrength > enemyPower) {
             damage = Math.floor(damage / 2);
-            console.log("Player's strength allows them to reduce the damage!");
+            output.push("Player's strength allows them to reduce the damage!\n");
         }
 
         playerHealth -= damage;
-        console.log(`Player takes ${damage} damage. Health is now: ${playerHealth}`);
+        output.push(`Player takes ${damage} damage. Health is now: ${playerHealth}\n`);
 
         return playerHealth;
     }
 
     static playerChallengeEnemy(enemyName, playerStrength, itemPower, enemyPower) {
-        console.log(`The player challenges ${enemyName}!`);
+        output.push(`The player challenges ${enemyName}!\n`);
         let playerAttackPower = playerStrength + (itemPower > 0 ? Math.floor(itemPower / 2) : 0);
 
         if (playerAttackPower > enemyPower) {
             enemyPower -= Math.floor(playerAttackPower / 2);
-            console.log(`The player defeats the enemy! Enemy power reduced to ${enemyPower}`);
+            output.push(`The player defeats the enemy! Enemy power reduced to ${enemyPower}\n`);
         } else {
-            console.log("The enemy is too strong. The player retreats!");
+            output.push("The enemy is too strong. The player retreats!\n");
         }
 
         return enemyPower;
@@ -93,5 +96,6 @@ class HeroQuest {
 }
 
 module.exports = {
-    HeroQuest
+    HeroQuest,
+    output
 };

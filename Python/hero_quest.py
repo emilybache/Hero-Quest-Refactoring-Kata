@@ -7,14 +7,6 @@ class HeroQuest:
                 .format(player_name, player_health, player_strength, player_magic, player_crafting_skill))
 
     @staticmethod
-    def enemy_to_string(enemy_name: str, enemy_power: int):
-        return "Enemy: {0}\nPower: {1}\n".format(enemy_name, enemy_power)
-
-    @staticmethod
-    def item_to_string(item_name: str, item_kind: str, item_power: int):
-        return "Item: {0}\nKind: {1}\nPower: {2}\n".format(item_name, item_kind, item_power)
-
-    @staticmethod
     def player_falls_down(player_strength: int, player_health: int):
         HeroQuest.output.append("Player drops off a cliff.\n")
 
@@ -23,6 +15,10 @@ class HeroQuest:
             HeroQuest.output.append("Player's strength is too small. Health decreases by 10.\n")
         
         return player_health
+
+    @staticmethod
+    def item_to_string(item_name: str, item_kind: str, item_power: int):
+        return "Item: {0}\nKind: {1}\nPower: {2}\n".format(item_name, item_kind, item_power)
 
     @staticmethod
     def item_reduce_by_usage(item_kind: str, item_power: int):
@@ -60,6 +56,10 @@ class HeroQuest:
         HeroQuest.output.append(f"Repaired the item by {repair_amount} points. Item's Durability: {item_power}\n")
         
         return item_power
+
+    @staticmethod
+    def enemy_to_string(enemy_name: str, enemy_power: int):
+        return "Enemy: {0}\nPower: {1}\n".format(enemy_name, enemy_power)
 
     @staticmethod
     def enemy_attack_player(enemy_name: str, enemy_power: int, player_strength: int, player_health: int):

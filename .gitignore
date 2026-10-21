@@ -4,3 +4,10 @@
 *.received.*
 **/DS_Store/*
 **/.DS_Store/*
+
+# marker
+env.bat
+env_*.bat
+TODO*
+Weiter *.txt
+Idee - *.txt

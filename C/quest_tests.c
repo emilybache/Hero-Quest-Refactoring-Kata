@@ -9,11 +9,14 @@ const char* testPlayerName = "Conan";
 int testPlayerHealth = 100;
 int testPlayerStrength = 20;
 int testPlayerMagic = 10;
-int testPlayerCraftingSkill = 10;
+int testPlayerCraftingSkill = 12;
 
-const char* testItemName = "Amulet of Strength";
-char* testItemKind = "Strength";
-int testItemPower = 10;
+const char* testItemName = "Healing Potion";
+const char* testItemKind = "Health";
+int testItemPower = 20;
+
+const char* testEnemyName = "Goblin";
+int testEnemyPower = 5;
 
 static void test_playerToString(void** state)
 {
@@ -25,7 +28,7 @@ static void test_playerToString(void** state)
 
     const char* expected =
         "Conan's Attributes:\nHealth: 100\nStrength: 20\nMagic: 10\nCrafting "
-        "Skill: 10\n";
+        "Skill: 12\n";
     assert_string_equal(result, expected);
 }
 
@@ -33,21 +36,22 @@ static void test_playerFallsDown(void** state)
 {
     (void)state;
 
-    testPlayerStrength = 3;
-    playerFallsDown(&testPlayerHealth, &testPlayerStrength);
+    int playerStrength = 3;
+    int playerHealth = 100;
+    playerFallsDown(&playerHealth, &playerStrength);
 
-    assert_int_equal(testPlayerHealth, 90);
-    testPlayerStrength = 20; // reset
-    testPlayerHealth = 100;  // reset
+    assert_int_equal(playerHealth, 90);
 }
 
 static void test_playerFallsDownNoDamage(void** state)
 {
     (void)state;
 
-    playerFallsDown(&testPlayerHealth, &testPlayerStrength);
+    int playerStrength = 7;
+    int playerHealth = 100;
+    playerFallsDown(&playerHealth, &playerStrength);
 
-    assert_int_equal(testPlayerHealth, 100);
+    assert_int_equal(playerHealth, 100);
 }
 
 static void test_itemToString(void** state)
@@ -57,8 +61,7 @@ static void test_itemToString(void** state)
     char result[256];
     itemToString(result, testItemName, testItemKind, testItemPower);
 
-    const char* expected =
-        "Item: Amulet of Strength\nKind: Strength\nPower: 10\n";
+    const char* expected = "Item: Healing Potion\nKind: Health\nPower: 20\n";
     assert_string_equal(result, expected);
 }
 
@@ -66,55 +69,95 @@ static void test_itemReduceByUsage(void** state)
 {
     (void)state;
 
-    itemReduceByUsage(testItemKind, &testItemPower);
+    char itemKind[16] = "Health";
+    int itemPower = 20;
+    itemReduceByUsage(itemKind, &itemPower);
 
-    assert_int_equal(testItemPower, 5);
-    assert_string_equal(testItemKind, "Strength");
-    testItemPower = 10; // reset
+    assert_int_equal(itemPower, 10);
+    assert_string_equal(itemKind, "Health");
 }
 
 static void test_itemReduceByUsageToJunk(void** state)
 {
     (void)state;
 
-    testItemPower = 1;
-    char itemKind[10] = "Strength";
-    itemReduceByUsage(itemKind, &testItemPower);
+    char itemKind[16] = "Health";
+    int itemPower = 1;
+    itemReduceByUsage(itemKind, &itemPower);
 
-    assert_int_equal(testItemPower, 0);
+    assert_int_equal(itemPower, 0);
     assert_string_equal(itemKind, "Junk");
-    testItemPower = 10; // reset
 }
 
 static void test_itemApplyEffectToPlayer(void** state)
 {
     (void)state;
 
+    int playerHealth = 100;
+    int playerStrength = 7;
+    int playerMagic = 15;
     itemApplyEffectToPlayer(testItemName, testItemKind, testItemPower,
-                            &testPlayerHealth, &testPlayerStrength, &testPlayerMagic);
+                            &playerHealth, &playerStrength, &playerMagic);
 
-    assert_int_equal(testPlayerStrength, 30);
-    testPlayerStrength = 20; // reset
+    assert_int_equal(playerHealth, 120);
 }
 
 static void test_itemApplyEffectToPlayerJunk(void** state)
 {
     (void)state;
 
-    itemApplyEffectToPlayer(testItemName, "Junk", testItemPower, &testPlayerHealth,
-                            &testPlayerStrength, &testPlayerMagic);
+    int playerHealth = 100;
+    int playerStrength = 7;
+    int playerMagic = 15;
+    itemApplyEffectToPlayer(testItemName, "Junk", testItemPower, &playerHealth,
+                            &playerStrength, &playerMagic);
 
-    assert_int_equal(testPlayerStrength, 20);
+    assert_int_equal(playerHealth, 100);
+    assert_int_equal(playerStrength, 7);
 }
 
 static void test_itemRepair(void** state)
 {
     (void)state;
 
-    itemRepair(&testItemPower, testPlayerCraftingSkill);
+    int itemPower = 20;
+    itemRepair(&itemPower, testPlayerCraftingSkill);
 
-    assert_int_equal(testItemPower, 26);
-    testItemPower = 10; // reset
+    assert_int_equal(itemPower, 40);
+}
+
+static void test_enemyToString(void** state)
+{
+    (void)state;
+
+    char result[256];
+    enemyToString(result, testEnemyName, testEnemyPower);
+
+    const char* expected = "Enemy: Goblin\nPower: 5\n";
+    assert_string_equal(result, expected);
+}
+
+static void test_enemyAttackPlayer(void** state)
+{
+    (void)state;
+
+    int playerHealth = 100;
+    int playerStrength = 20;
+    enemyAttackPlayer(testEnemyName, testEnemyPower, playerStrength, &playerHealth);
+
+    assert_int_equal(playerHealth, 98);
+}
+
+static void test_playerChallengeEnemy(void** state)
+{
+    (void)state;
+
+    int playerStrength = 20;
+    int itemPower = 10;
+    int enemyPower = 5;
+    playerChallengeEnemy(testEnemyName, playerStrength, itemPower, &enemyPower);
+
+    assert_int_equal(enemyPower, -7);
 }
 
 int main(void)
@@ -129,6 +172,9 @@ int main(void)
         cmocka_unit_test(test_itemApplyEffectToPlayer),
         cmocka_unit_test(test_itemApplyEffectToPlayerJunk),
         cmocka_unit_test(test_itemRepair),
+        cmocka_unit_test(test_enemyToString),
+        cmocka_unit_test(test_enemyAttackPlayer),
+        cmocka_unit_test(test_playerChallengeEnemy),
     };
 
     return cmocka_run_group_tests(tests, NULL, NULL);

@@ -13,16 +13,6 @@ public static class HeroQuest
             $"{playerName}'s Attributes:\nHealth: {playerHealth}\nStrength: {playerStrength}\nMagic: {playerMagic}\nCrafting Skill: {playerCraftingSkill}\n";
     }
 
-    public static string EnemyToString(string? enemyName, int enemyPower)
-    {
-        return $"Enemy: {enemyName}\nPower: {enemyPower}\n";
-    }
-
-    public static string ItemToString(string? itemName, string? itemKind, int itemPower)
-    {
-        return $"Item: {itemName}\nKind: {itemKind}\nPower: {itemPower}\n";
-    }
-
     public static int PlayerFallsDown(int playerStrength, int playerHealth)
     {
         Output.AppendLine("Player drops off a cliff.");
@@ -33,6 +23,11 @@ public static class HeroQuest
         }
 
         return playerHealth;
+    }
+
+    public static string ItemToString(string? itemName, string? itemKind, int itemPower)
+    {
+        return $"Item: {itemName}\nKind: {itemKind}\nPower: {itemPower}\n";
     }
 
     public static (string? ItemKind, int ItemPower) ItemReduceByUsage(string? itemKind, int itemPower)
@@ -85,6 +80,10 @@ public static class HeroQuest
         return itemPower;
     }
 
+    public static string EnemyToString(string? enemyName, int enemyPower)
+    {
+        return $"Enemy: {enemyName}\nPower: {enemyPower}\n";
+    }
 
     public static int EnemyAttackPlayer(string? enemyName, int enemyPower, int playerStrength, int playerHealth)
     {
